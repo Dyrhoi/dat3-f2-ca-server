@@ -88,7 +88,7 @@ Example response
 }
 ```
 
-####
+#### Postal Code
 
 2. PostalCode
 ```javascript
