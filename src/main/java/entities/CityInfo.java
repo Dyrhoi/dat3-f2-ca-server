@@ -1,10 +1,9 @@
 package entities;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
+import javax.persistence.*;
 import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 public class CityInfo implements Serializable {
@@ -16,6 +15,9 @@ public class CityInfo implements Serializable {
     @Column(length = 35)
     private String city;
 
+    @OneToMany(mappedBy = "cityInfo")
+    private List<Address> addresses = new ArrayList<>();
+
     public CityInfo() {
     }
 
@@ -25,5 +27,15 @@ public class CityInfo implements Serializable {
 
     public String getCity() {
         return city;
+    }
+
+    public void addAddress(Address address) {
+        addresses.add(address);
+        address.setCityInfo(this);
+    }
+
+    public void removeAddress(Address address) {
+        addresses.remove(address);
+        address.setCityInfo(null);
     }
 }

@@ -1,10 +1,10 @@
 package entities;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
+import javax.persistence.*;
 import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Objects;
 
 @Entity
 public class Hobby implements Serializable {
@@ -17,6 +17,9 @@ public class Hobby implements Serializable {
     private String wikiLink;
     private String category;
     private String type;
+
+    @ManyToMany
+    private List<Person> people = new ArrayList<>();
 
     public Hobby() {
     }
@@ -35,5 +38,36 @@ public class Hobby implements Serializable {
 
     public String getType() {
         return type;
+    }
+
+    public List<Person> getPeople() {
+        return people;
+    }
+
+    public void setPeople(List<Person> people) {
+        this.people = people;
+    }
+
+    public void addPerson(Person person) {
+        people.add(person);
+        person.addHobby(this);
+    }
+
+    public void removePerson(Person person) {
+        people.remove(person);
+        person.removeHobby(this);
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Hobby hobby = (Hobby) o;
+        return Objects.equals(name, hobby.name);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(name);
     }
 }

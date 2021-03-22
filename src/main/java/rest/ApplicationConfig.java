@@ -26,7 +26,6 @@ public class ApplicationConfig extends Application {
         resources.add(errorhandling.GenericExceptionMapper.class);
         resources.add(CorsFilter.class);
 
-        resources.add(rest.RenameMeResource.class);
     }
     
 }
