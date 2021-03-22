@@ -61,7 +61,7 @@ Example response
 {
     "id" : 1,
     "firstname": "John",
-    "lastname": "Smith,
+    "lastname": "Smith",
     "address": {
         "street": "Roskildevej 2.A",
         "postalcode": 4000,
