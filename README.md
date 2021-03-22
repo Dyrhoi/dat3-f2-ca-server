@@ -11,28 +11,90 @@
 | GET       | /api/users                            |                       | User {id} (1)                         |               |
 | GET       | /api/users{id}                        |                       | [User, User, ...] (1)                 | (e1)          |
 | GET       | /api/users/hobby/{hobby}              |                       | [User, User, ...] (1)                 | (e1)          |
-| GET       | /api/postalcodes                      |                       | [Postal code, Postal code, ...] (2)   | (e1)          |
+| GET       | /api/postalcodes                      |                       | [PostalCode, PostalCode, ...] (2)   | (e1)          |
 | GET       | /api/users/postalcode/{postalcode}    |                       | [User, User, ...] (1)                 | (e1)          |
 | POST      | /api/users                            | User(1) without ID    |                                       | (e2)          |
 | PUT       | /api/users/{id}                       | User(1) with ID       |                                       | (e1) & (e2)   |
 
 ### Request Body and Respons Formats
+#### User
 1. User format (dont provide ID, for POST)
 ```javascript
 {
-    "Id" : Number,
-    "FirstName" : String,
-    "LastName" : String,
-    "Phone" : Array (Phone),
-    "Email" : String (Email),
-    "Hobbies" : Array (Hobby)
+    "id" : Number,
+    "firstname": String,
+    "lastname": String,
+    "address": Address (1.1)
+    "phone": Array (Phone (1.2)),
+    "email": String,
+    "hobbies": Array (Hobby (1.3))
 }
 ```
-2. Postal code format
+1.1. Address
 ```javascript
 {
-    "PostalCode" : Number,
-    "City", String
+    "street": String
+    "postalcode": Number
+    "city": String
+}
+```
+
+1.2. Phone
+```javascript
+{
+    "number": Number
+    "description": String
+}
+```
+
+1.3. Hobby
+```javascript
+{
+    "name": String
+    "category": String
+    "type": String
+}
+```
+
+Example response
+```javascript
+{
+    "id" : 1,
+    "firstname": "John",
+    "lastname": "Smith",
+    "address": {
+        "street": "Roskildevej 2.A",
+        "postalcode": 4000,
+        "city": "Roskilde"
+    },
+    "phone": [
+        {
+            "number": 10102020,
+            "description": "Work phone"
+        },
+        {
+            "number": 10102030,
+            "description": "Private phone"
+        }
+    ],
+    "email": "johnsmith@test.dk",
+    "hobbies": [
+        {
+            "name": "Flag fodbold",
+            "category": "Generel",
+            "type": "Udendørs"
+        }
+    ]
+}
+```
+
+#### Postal Code
+
+2. PostalCode
+```javascript
+{
+    "postalcode": Number
+    "city": String
 }
 ```
 
