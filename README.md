@@ -66,7 +66,7 @@ Example response
         "street": "Roskildevej 2.A",
         "postalcode": 4000,
         "city": "Roskilde"
-    }
+    },
     "phone": [
         {
             "number": 10102020,
@@ -76,7 +76,7 @@ Example response
             "number": 10102030,
             "description": "Private phone"
         }
-    ]
+    ],
     "email": "johnsmith@test.dk",
     "hobbies": [
         {
