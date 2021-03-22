@@ -1,23 +1,45 @@
 [![Build Status](https://travis-ci.org/dat3startcode/dat3-startcode.svg?branch=master)](https://travis-ci.org/dat3startcode/dat3-startcode)
 
-*This project is meant as start code for projects and exercises given in Flow-1+2 (+3 using the security-branch) at http://cphbusiness.dk in the Study Program "AP degree in Computer Science"*
+# NextLevel CA 2 Project
+*This is NextLevel's CA 2 project for 3rd semester on CPH-Business Acadamy*
 
-*Projects which are expected to use this start-code are projects that require all, or most of the following technologies:*
- - *JPA and REST*
-- *Testing, including database test*
-- *Testing, including tests of REST-API's*
-- *CI and CONTINUOUS DELIVERY*
+## REST API Documentation
+*This is our REST API Documentation for our CA2 project*
 
-## Flow 2 week 1
-In this week we begin using json errormessages. The folder errorhandling is added to the project containing: 
-- ExceptionDTO
-- GenericExceptionMapper
-With that addition, error message will be converted to json when a rest endpoint is called. Even a 404.
-Execute > git clone -b errorhandling git@github.com:dat3startcode/dat3-startcode.git to clone the version of the startcode with errorhandling
+| Method    | URL                                   | Request Body (JSON)   | Response (JSON)                       | Error         |
+|---        |---                                    |---                    |---                                    |---            |
+| GET       | /api/users                            |                       | User {id} (1)                         |               |
+| GET       | /api/users{id}                        |                       | [User, User, ...] (1)                 | (e1)          |
+| GET       | /api/users/hobby/{hobby}              |                       | [User, User, ...] (1)                 | (e1)          |
+| GET       | /api/postalcodes                      |                       | [Postal code, Postal code, ...] (2)   | (e1)          |
+| GET       | /api/users/postalcode/{postalcode}    |                       | [User, User, ...] (1)                 | (e1)          |
+| POST      | /api/users                            | User(1) without ID    |                                       | (e2)          |
+| PUT       | /api/users/{id}                       | User(1) with ID       |                                       | (e1) & (e2)   |
 
-### Preconditions
-*In order to use this code, you should have a local developer setup + a "matching" droplet on Digital Ocean as described in the 3. semester guidelines* 
-# Getting Started
+### Request Body and Respons Formats
+1. User format (dont provide ID, for POST)
+```javascript
+{
+    "Id" : Number,
+    "FirstName" : String,
+    "LastName" : String,
+    "Phone" : Array (Phone),
+    "Email" : String (Email),
+    "Hobbies" : Array (Hobby)
+}
+```
+2. Postal code format
+```javascript
+{
+    "PostalCode" : Number,
+    "City", String
+}
+```
 
-This document explains how to use this code (build, test and deploy), locally with maven, and remotely with maven controlled by Travis
- - [How to use](https://docs.google.com/document/d/1K6s6Tt65bzB8bCSE_NUE8alJrLRNTKCwax3GEm4OjOE/edit?usp=sharing)
+### Errors
+(e) All errors are reported using this format (with the HTTP-Status code matching the number)
+
+{ status : statusCode, "msg" : "Explains problem" }
+
+* (e1) : { status : 404, "msg" : "No content found for this request" }
+* (e2) : { status : 400, "msg" : "Field 'xxx' is required" } (For example, no first or last name provided, not a valid email)
