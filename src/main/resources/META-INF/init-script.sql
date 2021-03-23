@@ -1351,7 +1351,7 @@ INSERT INTO CITYINFO VALUES ('960','Hov');
 INSERT INTO CITYINFO VALUES ('970','Sumba');
 INSERT INTO CITYINFO VALUES ('','undefined');
 
-INSERT INTO HOBBY (name,wikiLink,category,type)  (name,wikiLink,category,type) VALUES ('3D-udskrivning','https://en.wikipedia.org/wiki/3D_printing','Generel','Indendørs');
+INSERT INTO HOBBY (name,wikiLink,category,type)  VALUES ('3D-udskrivning','https://en.wikipedia.org/wiki/3D_printing','Generel','Indendørs');
 INSERT INTO HOBBY (name,wikiLink,category,type)  VALUES ('Akrobatik','https://en.wikipedia.org/wiki/Acrobatics','Generel','Indendørs');
 INSERT INTO HOBBY (name,wikiLink,category,type)  VALUES ('Skuespil','https://en.wikipedia.org/wiki/Acting','Generel','Indendørs');
 INSERT INTO HOBBY (name,wikiLink,category,type)  VALUES ('Amatørradio','https://en.wikipedia.org/wiki/Amateur_radio','Generel','Indendørs');
