@@ -24,6 +24,13 @@ public class Hobby implements Serializable {
     public Hobby() {
     }
 
+    public Hobby(String name, String wikiLink, String category, String type) {
+        this.name = name;
+        this.wikiLink = wikiLink;
+        this.category = category;
+        this.type = type;
+    }
+
     public String getName() {
         return name;
     }

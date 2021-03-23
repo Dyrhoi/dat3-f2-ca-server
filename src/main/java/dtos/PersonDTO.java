@@ -121,10 +121,10 @@ public class PersonDTO {
 
     public static class AddressDTO {
         private String street;
-        private int postalcode;
+        private String postalcode;
         private String city;
 
-        public AddressDTO(String street, int postalcode, String city) {
+        public AddressDTO(String street, String postalcode, String city) {
             this.street = street;
             this.postalcode = postalcode;
             this.city = city;
@@ -138,11 +138,11 @@ public class PersonDTO {
             this.street = street;
         }
 
-        public int getPostalcode() {
+        public String getPostalcode() {
             return postalcode;
         }
 
-        public void setPostalcode(int postalcode) {
+        public void setPostalcode(String postalcode) {
             this.postalcode = postalcode;
         }
 

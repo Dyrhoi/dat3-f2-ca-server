@@ -11,7 +11,7 @@ public class CityInfo implements Serializable {
 
     @Id
     @Column(length = 4)
-    private int postalCode;
+    private String postalCode;
     @Column(length = 35)
     private String city;
 
@@ -21,7 +21,12 @@ public class CityInfo implements Serializable {
     public CityInfo() {
     }
 
-    public int getPostalCode() {
+    public CityInfo(String postalCode, String city) {
+        this.postalCode = postalCode;
+        this.city = city;
+    }
+
+    public String getPostalCode() {
         return postalCode;
     }
 

@@ -12,7 +12,7 @@ public class Phone implements Serializable {
     private int number;
     private String description;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne()
     private Person person;
 
     public Phone() {
@@ -44,7 +44,8 @@ public class Phone implements Serializable {
     }
 
     public void setPerson(Person person) {
-        this.person = person;
+        if(person != null)
+            this.person = person;
     }
 
     @Override

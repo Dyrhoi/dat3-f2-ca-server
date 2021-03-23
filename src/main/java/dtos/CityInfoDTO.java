@@ -4,10 +4,10 @@ import entities.CityInfo;
 
 public class CityInfoDTO {
 
-    private int postalcode;
+    private String postalcode;
     private String city;
 
-    public CityInfoDTO(int postalcode, String city) {
+    public CityInfoDTO(String postalcode, String city) {
         this.postalcode = postalcode;
         this.city = city;
     }
@@ -18,11 +18,11 @@ public class CityInfoDTO {
         this.city = cityInfo.getCity();
     }
 
-    public int getPostalcode() {
+    public String getPostalcode() {
         return postalcode;
     }
 
-    public void setPostalcode(int postalcode) {
+    public void setPostalcode(String postalcode) {
         this.postalcode = postalcode;
     }
 

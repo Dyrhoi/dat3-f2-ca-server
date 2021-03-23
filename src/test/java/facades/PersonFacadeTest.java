@@ -1,10 +1,7 @@
 package facades;
 
 import dtos.PersonDTO;
-import entities.Address;
-import entities.Hobby;
-import entities.Person;
-import entities.Phone;
+import entities.*;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
@@ -13,6 +10,7 @@ import utils.EMF_Creator;
 import static org.junit.jupiter.api.Assertions.*;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
+import javax.persistence.TypedQuery;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -27,6 +25,21 @@ class PersonFacadeTest {
         emf = EMF_Creator.createEntityManagerFactoryForTest();
         facade = PersonFacade.getPersonFacade(emf);
 
+        EntityManager em = emf.createEntityManager();
+        // We're not using our insert script in our tests...
+
+        em.getTransaction().begin();
+        em.createQuery("DELETE FROM CityInfo").executeUpdate();
+        em.createQuery("DELETE FROM Hobby").executeUpdate();
+
+        em.persist(new Hobby("Humor", "Generel", "Indendørs", "wikilink.com"));
+        em.persist(new Hobby("Videospil", "Generel", "Indendørs", "wikilink.com"));
+        em.persist(new Hobby("Vævning", "Generel", "Indendørs", "wikilink.com"));
+
+        em.persist(new CityInfo("4000", "Roskilde"));
+        em.persist(new CityInfo("2300", "Amager"));
+        em.getTransaction().commit();
+
     }
 
     @AfterAll
@@ -39,13 +52,14 @@ class PersonFacadeTest {
         EntityManager em = emf.createEntityManager();
         try{
             em.getTransaction().begin();
-            em.createQuery("DELETE from Person").executeUpdate();
+            // Do this since we need to cascade delete...?
+            em.createQuery("SELECT p from Person p", Person.class).getResultStream().forEach(em::remove);
             em.getTransaction().commit();
         }finally {
             em.close();
         }
-        PersonDTO.AddressDTO a1 = new PersonDTO.AddressDTO("Langegade 14", 4000, "Roskilde");
-        PersonDTO.AddressDTO a2 = new PersonDTO.AddressDTO("Amagergade 12", 2300, "Amager");
+        PersonDTO.AddressDTO a1 = new PersonDTO.AddressDTO("Langegade 14", "4000", "Roskilde");
+        PersonDTO.AddressDTO a2 = new PersonDTO.AddressDTO("Amagergade 12", "2300", "Amager");
         PersonDTO.PhoneDTO ph1 = new PersonDTO.PhoneDTO(12345678, "Hjemme");
         PersonDTO.PhoneDTO ph2 = new PersonDTO.PhoneDTO(87654321, "Arbejde");
         PersonDTO.PhoneDTO ph3 = new PersonDTO.PhoneDTO(15764328, "Mobil");
@@ -73,7 +87,7 @@ class PersonFacadeTest {
     @Test
     void create() {
         System.out.println("Create Test");
-        PersonDTO.AddressDTO a1 = new PersonDTO.AddressDTO("Langegade 14", 4000, "Roskilde");
+        PersonDTO.AddressDTO a1 = new PersonDTO.AddressDTO("Langegade 14", "4000", "Roskilde");
         PersonDTO.PhoneDTO ph1 = new PersonDTO.PhoneDTO(45678231, "Hjemme");
         List<PersonDTO.PhoneDTO> pList1 = new ArrayList<>();
         pList1.add(ph1);

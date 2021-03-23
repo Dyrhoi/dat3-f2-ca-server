@@ -73,7 +73,7 @@ public class PersonFacade {
         return PersonDTO.toList(personList);
     }
 
-    public List<PersonDTO> getPersonsByCity(int postalCode){
+    public List<PersonDTO> getPersonsByCity(String postalCode){
         EntityManager em = emf.createEntityManager();
         TypedQuery<CityInfo> q = em.createQuery("SELECT c FROM CityInfo c WHERE c.postalCode = :postalCode", CityInfo.class);
         q.setParameter("postalCode", postalCode);
