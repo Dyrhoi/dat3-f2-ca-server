@@ -14,7 +14,7 @@
 | GET       | /api/people/postalcode/{postalcode}    |                         | [Person, Person, ...] (1)             | (e1)          |
 | POST      | /api/people                            | Person(1)               | CREATED Person (1)                    | (e2)          |
 | PUT       | /api/people/{id}                       | Person(1)               | UPDATED Person (1)                    | (e1) & (e2)   |
-| DELETE    | /api/people/{id}                       | Person(1)               | DELETED Person (1)                    | (e1) & (e2)   |
+| DELETE    | /api/people/{id}                       |                         | DELETED Person (1)                    | (e1) & (e2)   |
 | GET       | /api/postalcodes                       |                         | [PostalCode, PostalCode, ...] (2)     | (e1)          |
 
 ### Request Body and Respons Formats
