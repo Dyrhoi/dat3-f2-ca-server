@@ -9,9 +9,7 @@ import utils.EMF_Creator;
 import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
+import java.util.*;
 
 @Path("/people")
 @Produces(MediaType.APPLICATION_JSON)
@@ -24,7 +22,7 @@ public class PersonResource {
 
     @GET
     public Response getPeople() {
-        return Response.ok().entity(GSON.toJson(Collections.singletonMap("data", PERSON_FACADE.getAll()))).build();
+        return Response.ok().entity(GSON.toJson(peopleResponseData(PERSON_FACADE.getAll()))).build();
     }
 
     @GET
@@ -36,13 +34,13 @@ public class PersonResource {
     @GET
     @Path("/hobby/{hobby}")
     public Response getPeopleByHobby(@PathParam("hobby") String name) {
-        return Response.ok().entity(GSON.toJson(PERSON_FACADE.getPersonsByHobby(name))).build();
+        return Response.ok().entity(GSON.toJson(peopleResponseData(PERSON_FACADE.getPersonsByHobby(name)))).build();
     }
 
     @GET
     @Path("/postalcode/{postalcode}")
     public Response getPeopleByPostalCode(@PathParam("postalcode") String postalcode) {
-        return Response.ok().entity(GSON.toJson(PERSON_FACADE.getPersonsByCity(postalcode))).build();
+        return Response.ok().entity(GSON.toJson(peopleResponseData(PERSON_FACADE.getPersonsByCity(postalcode)))).build();
     }
 
     @POST
@@ -57,5 +55,9 @@ public class PersonResource {
         PersonDTO p = GSON.fromJson(JsonPerson, PersonDTO.class);
         //p = PERSON_FACADE.update(p);
         return Response.ok().entity(GSON.toJson(p)).build();
+    }
+
+    private Map<String, List<PersonDTO>> peopleResponseData(List<PersonDTO> people) {
+        return Collections.singletonMap("data", people);
     }
 }
