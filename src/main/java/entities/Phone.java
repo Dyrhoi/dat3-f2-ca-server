@@ -9,8 +9,6 @@ public class Phone implements Serializable {
     private static final long serialVersionUID = 1L;
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private long id;
     private int number;
     private String description;
 
@@ -23,10 +21,6 @@ public class Phone implements Serializable {
     public Phone(int number, String description) {
         this.number = number;
         this.description = description;
-    }
-
-    public long getId() {
-        return id;
     }
 
     public int getNumber() {
@@ -58,11 +52,11 @@ public class Phone implements Serializable {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Phone phone = (Phone) o;
-        return id == phone.id && number == phone.number;
+        return number == phone.number;
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, number);
+        return Objects.hash(number);
     }
 }

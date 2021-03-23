@@ -38,4 +38,8 @@ public class CityInfo implements Serializable {
         addresses.remove(address);
         address.setCityInfo(null);
     }
+
+    public List<Address> getAddresses() {
+        return addresses;
+    }
 }
