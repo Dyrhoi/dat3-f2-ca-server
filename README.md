@@ -9,7 +9,7 @@
 | Method    | URL                                    | Request Body (JSON)     | Response (JSON)                       | Error         |
 |---        |---                                     |---                      |---                                    |---            |
 | GET       | /api/people                            |                         | Person {id} (1)                       |               |
-| GET       | /api/people{id}                        |                         | [Person, Person, ...] (1)             | (e1)          |
+| GET       | /api/people/{id}                        |                         | [Person, Person, ...] (1)             | (e1)          |
 | GET       | /api/people/hobby/{hobby}              |                         | [Person, Person, ...] (1)             | (e1)          |
 | GET       | /api/people/postalcode/{postalcode}    |                         | [Person, Person, ...] (1)             | (e1)          |
 | POST      | /api/people                            | Person(1) without ID    |                                       | (e2)          |
