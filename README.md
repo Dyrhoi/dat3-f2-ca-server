@@ -6,19 +6,19 @@
 ## REST API Documentation
 *This is our REST API Documentation for our CA2 project*
 
-| Method    | URL                                   | Request Body (JSON)   | Response (JSON)                       | Error         |
-|---        |---                                    |---                    |---                                    |---            |
-| GET       | /api/users                            |                       | User {id} (1)                         |               |
-| GET       | /api/users{id}                        |                       | [User, User, ...] (1)                 | (e1)          |
-| GET       | /api/users/hobby/{hobby}              |                       | [User, User, ...] (1)                 | (e1)          |
-| GET       | /api/postalcodes                      |                       | [PostalCode, PostalCode, ...] (2)   | (e1)          |
-| GET       | /api/users/postalcode/{postalcode}    |                       | [User, User, ...] (1)                 | (e1)          |
-| POST      | /api/users                            | User(1) without ID    |                                       | (e2)          |
-| PUT       | /api/users/{id}                       | User(1) with ID       |                                       | (e1) & (e2)   |
+| Method    | URL                                    | Request Body (JSON)     | Response (JSON)                       | Error         |
+|---        |---                                     |---                      |---                                    |---            |
+| GET       | /api/people                            |                         | Person {id} (1)                       |               |
+| GET       | /api/people{id}                        |                         | [Person, Person, ...] (1)             | (e1)          |
+| GET       | /api/people/hobby/{hobby}              |                         | [Person, Person, ...] (1)             | (e1)          |
+| GET       | /api/people/postalcode/{postalcode}    |                         | [Person, Person, ...] (1)             | (e1)          |
+| POST      | /api/people                            | Person(1) without ID    |                                       | (e2)          |
+| PUT       | /api/people/{id}                       | Person(1) with ID       |                                       | (e1) & (e2)   |
+| GET       | /api/postalcodes                       |                         | [PostalCode, PostalCode, ...] (2)     | (e1)          |
 
 ### Request Body and Respons Formats
-#### User
-1. User format (dont provide ID, for POST)
+#### Person
+1. Person format (dont provide ID, for POST)
 ```javascript
 {
     "id" : Number,
