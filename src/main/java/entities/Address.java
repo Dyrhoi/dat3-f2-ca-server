@@ -2,6 +2,8 @@ package entities;
 
 import javax.persistence.*;
 import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Objects;
 
 @Entity
@@ -15,6 +17,9 @@ public class Address implements Serializable {
 
     @ManyToOne(cascade = CascadeType.PERSIST)
     private CityInfo cityInfo;
+
+    @OneToMany(mappedBy = "address")
+    private List<Person> people = new ArrayList<>();
 
     public Address() {
     }
@@ -41,6 +46,18 @@ public class Address implements Serializable {
 
     public void setCityInfo(CityInfo cityInfo) {
         this.cityInfo = cityInfo;
+    }
+
+    public void addPerson(Person p) {
+        people.add(p);
+    }
+
+    public void removePerson(Person p) {
+        people.remove(p);
+    }
+
+    public List<Person> getPeople() {
+        return people;
     }
 
     @Override

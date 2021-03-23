@@ -19,7 +19,7 @@ public class Person implements Serializable {
     @ManyToOne(cascade = CascadeType.PERSIST)
     private Address address;
 
-    @ManyToMany(mappedBy = "people")
+    @ManyToMany(mappedBy = "people", cascade = CascadeType.PERSIST)
     private List<Hobby> hobbies = new ArrayList<>();
 
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "person", orphanRemoval = true)
@@ -68,6 +68,8 @@ public class Person implements Serializable {
 
     public void setAddress(Address address) {
         this.address = address;
+        if(address != null)
+            address.addPerson(this);
     }
 
     public List<Hobby> getHobbies() {
