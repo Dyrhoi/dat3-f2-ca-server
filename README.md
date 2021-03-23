@@ -9,9 +9,9 @@
 | Method    | URL                                    | Request Body (JSON)     | Response (JSON)                       | Error         |
 |---        |---                                     |---                      |---                                    |---            |
 | GET       | /api/people                            |                         | Person (1)                            |               |
-| GET       | /api/people/{id}                       |                         | [Person, Person, ...] (1)             | (e1)          |
-| GET       | /api/people/hobby/{hobby}              |                         | [Person, Person, ...] (1)             | (e1)          |
-| GET       | /api/people/postalcode/{postalcode}    |                         | [Person, Person, ...] (1)             | (e1)          |
+| GET       | /api/people/{id}                       |                         | PersonArray (1.1)                     | (e1)          |
+| GET       | /api/people/hobby/{hobby}              |                         | PersonArray (1.1)                     | (e1)          |
+| GET       | /api/people/postalcode/{postalcode}    |                         | PersonArray (1.1)                     | (e1)          |
 | POST      | /api/people                            | Person(1)               | CREATED Person (1)                    | (e2)          |
 | PUT       | /api/people/{id}                       | Person(1)               | UPDATED Person (1)                    | (e1) & (e2)   |
 | DELETE    | /api/people/{id}                       |                         | DELETED Person (1)                    | (e1) & (e2)   |
@@ -25,39 +25,47 @@
     "id" : Number,
     "firstname": String,
     "lastname": String,
-    "address": Address (1.1)
-    "phone": Array (Phone (1.2)),
+    "address": Address (1.2),
+    "phone": Array (Phone (1.3)),
     "email": String,
-    "hobbies": Array (Hobby (1.3))
+    "hobbies": Array (Hobby (1.4))
 }
 ```
+
 1.1. Address
 ```javascript
 {
-    "street": String
-    "postalcode": String
+    "data": Array (User (1))
+}
+```
+
+1.2. Address
+```javascript
+{
+    "street": String,
+    "postalcode": String,
     "city": String
 }
 ```
 
-1.2. Phone
+1.3. Phone
 ```javascript
 {
-    "number": Number
+    "number": Number,
     "description": String
 }
 ```
 
-1.3. Hobby
+1.4. Hobby
 ```javascript
 {
-    "name": String
-    "category": String
+    "name": String,
+    "category": String,
     "type": String
 }
 ```
 
-Example response
+Example Person (1) Response
 ```javascript
 {
     "id" : 1,
