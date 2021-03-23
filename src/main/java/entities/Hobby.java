@@ -50,12 +50,10 @@ public class Hobby implements Serializable {
 
     public void addPerson(Person person) {
         people.add(person);
-        person.addHobby(this);
     }
 
     public void removePerson(Person person) {
         people.remove(person);
-        person.removeHobby(this);
     }
 
     @Override

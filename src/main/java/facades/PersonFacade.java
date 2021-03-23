@@ -42,7 +42,8 @@ public class PersonFacade {
         Address tmpAddress = new Address(address.getStreet());
         CityInfo tmpCityInfo = em.find(CityInfo.class, address.getPostalcode());
         for (PersonDTO.PhoneDTO p : phone){
-            tmpPerson.addPhone(em.find(Phone.class, p.getNumber()));
+            Phone ph1 = new Phone(p.getNumber(), p.getDescription());
+            tmpPerson.addPhone(ph1);
         }
         for (PersonDTO.HobbyDTO h : hobbies){
             tmpPerson.addHobby(em.find(Hobby.class, h.getName()));
