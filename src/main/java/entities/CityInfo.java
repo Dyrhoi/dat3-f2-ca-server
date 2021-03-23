@@ -11,7 +11,7 @@ public class CityInfo implements Serializable {
 
     @Id
     @Column(length = 4)
-    private int zipCode;
+    private int postalCode;
     @Column(length = 35)
     private String city;
 
@@ -21,8 +21,8 @@ public class CityInfo implements Serializable {
     public CityInfo() {
     }
 
-    public int getZipCode() {
-        return zipCode;
+    public int getPostalCode() {
+        return postalCode;
     }
 
     public String getCity() {

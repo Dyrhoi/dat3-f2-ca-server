@@ -28,7 +28,7 @@ public class PersonDTO {
     public PersonDTO(Person person) {
         AddressDTO address = new AddressDTO(
                 person.getAddress().getStreet(),
-                person.getAddress().getCityInfo().getZipCode(),
+                person.getAddress().getCityInfo().getPostalCode(),
                 person.getAddress().getCityInfo().getCity());
 
         List<PhoneDTO> phoneList = new ArrayList<>();

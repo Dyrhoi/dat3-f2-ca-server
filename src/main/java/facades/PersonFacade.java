@@ -1,5 +1,6 @@
 package facades;
 
+import dtos.CityInfoDTO;
 import dtos.PersonDTO;
 import entities.*;
 
@@ -8,6 +9,7 @@ import javax.persistence.EntityManagerFactory;
 import javax.persistence.TypedQuery;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 public class PersonFacade {
     private static PersonFacade instance;
@@ -70,19 +72,39 @@ public class PersonFacade {
         return PersonDTO.toList(personList);
     }
 
-    /*public List<PersonDTO> getPersonsByCity(int zipCode){
+    public List<PersonDTO> getPersonsByCity(int postalCode){
         EntityManager em = emf.createEntityManager();
-        TypedQuery<CityInfo> q = em.createQuery("SELECT c FROM CityInfo c WHERE c.zipCode = :zipCode", CityInfo.class);
-        q.setParameter("zipCode", zipCode);
+        TypedQuery<CityInfo> q = em.createQuery("SELECT c FROM CityInfo c WHERE c.postalCode = :postalCode", CityInfo.class);
+        q.setParameter("postalCode", postalCode);
         CityInfo cityInfo = q.getSingleResult();
         List<Person> personList = new ArrayList<>();
         cityInfo.getAddresses().forEach(address -> {
-            address.get
-            personList.add()
+            personList.addAll(address.getPeople());
         });
+        return PersonDTO.toList(personList);
     }
 
-     */
+    public List<PersonDTO> getPersonsByHobby(String hobby){
+        EntityManager em = emf.createEntityManager();
+        TypedQuery<Hobby> q = em.createQuery("SELECT h FROM Hobby h WHERE h.name = :name", Hobby.class);
+        q.setParameter("name", hobby);
+        Hobby hobbies = q.getSingleResult();
+        List<Person> personList = hobbies.getPeople();
+        return PersonDTO.toList(personList);
+    }
 
+    public List<CityInfoDTO> getAllZipCodes(){
+        EntityManager em = emf.createEntityManager();
+        TypedQuery<CityInfo> q = em.createQuery("SELECT z FROM CityInfo z", CityInfo.class);
+        return q.getResultList().stream().map(CityInfoDTO::new).collect(Collectors.toList());
+    }
+
+    public PersonDTO updatePerson(int id, PersonDTO pDTO){
+        return null;
+    }
+
+    public PersonDTO deletePerson(int id){
+        return null;
+    }
 
 }
