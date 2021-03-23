@@ -32,7 +32,7 @@
 }
 ```
 
-1.1. Address
+1.1. PersonArray
 ```javascript
 {
     "data": Array (User (1))
