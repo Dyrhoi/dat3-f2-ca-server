@@ -11,12 +11,12 @@ public class PersonDTO {
     private long id;
     private String firstname;
     private String lastname;
-    private Address address;
-    private List<Phone> phone;
+    private AddressDTO address;
+    private List<PhoneDTO> phone;
     private String email;
-    private List<Hobby> hobbies;
+    private List<HobbyDTO> hobbies;
 
-    public PersonDTO(String firstname, String lastname, Address address, List<Phone> phone, String email, List<Hobby> hobbies) {
+    public PersonDTO(String firstname, String lastname, AddressDTO address, List<PhoneDTO> phone, String email, List<HobbyDTO> hobbies) {
         this.firstname = firstname;
         this.lastname = lastname;
         this.address = address;
@@ -26,19 +26,19 @@ public class PersonDTO {
     }
 
     public PersonDTO(Person person) {
-        PersonDTO.Address address = new Address(
+        AddressDTO address = new AddressDTO(
                 person.getAddress().getStreet(),
                 person.getAddress().getCityInfo().getZipCode(),
                 person.getAddress().getCityInfo().getCity());
 
-        List<Phone> phoneList = new ArrayList<>();
+        List<PhoneDTO> phoneList = new ArrayList<>();
         person.getPhones().forEach(pe -> {
-            phoneList.add(new Phone(pe.getNumber(), pe.getDescription()));
+            phoneList.add(new PhoneDTO(pe.getNumber(), pe.getDescription()));
         });
 
-        List<Hobby> hobbyList = new ArrayList<>();
+        List<HobbyDTO> hobbyList = new ArrayList<>();
         person.getHobbies().forEach(he -> {
-            hobbyList.add(new Hobby(he.getName(), he.getCategory(), he.getType()));
+            hobbyList.add(new HobbyDTO(he.getName(), he.getCategory(), he.getType()));
         });
 
         this.id = person.getId();
@@ -74,19 +74,19 @@ public class PersonDTO {
         this.lastname = lastname;
     }
 
-    public Address getAddress() {
+    public AddressDTO getAddress() {
         return address;
     }
 
-    public void setAddress(Address address) {
+    public void setAddress(AddressDTO address) {
         this.address = address;
     }
 
-    public List<Phone> getPhone() {
+    public List<PhoneDTO> getPhone() {
         return phone;
     }
 
-    public void setPhone(List<Phone> phone) {
+    public void setPhone(List<PhoneDTO> phone) {
         this.phone = phone;
     }
 
@@ -98,11 +98,11 @@ public class PersonDTO {
         this.email = email;
     }
 
-    public List<Hobby> getHobbies() {
+    public List<HobbyDTO> getHobbies() {
         return hobbies;
     }
 
-    public void setHobbies(List<Hobby> hobbies) {
+    public void setHobbies(List<HobbyDTO> hobbies) {
         this.hobbies = hobbies;
     }
 
@@ -119,12 +119,12 @@ public class PersonDTO {
         return Objects.hash(id);
     }
 
-    public static class Address {
+    public static class AddressDTO {
         private String street;
         private int postalcode;
         private String city;
 
-        public Address(String street, int postalcode, String city) {
+        public AddressDTO(String street, int postalcode, String city) {
             this.street = street;
             this.postalcode = postalcode;
             this.city = city;
@@ -155,11 +155,11 @@ public class PersonDTO {
         }
     }
 
-    public static class Phone {
+    public static class PhoneDTO {
         private int number;
         private String description;
 
-        public Phone(int number, String description) {
+        public PhoneDTO(int number, String description) {
             this.number = number;
             this.description = description;
         }
@@ -181,12 +181,12 @@ public class PersonDTO {
         }
     }
 
-    public static class Hobby {
+    public static class HobbyDTO {
         private String name;
         private String category;
         private String type;
 
-        public Hobby(String name, String category, String type) {
+        public HobbyDTO(String name, String category, String type) {
             this.name = name;
             this.category = category;
             this.type = type;
