@@ -36,7 +36,7 @@ public class PersonFacade {
         return emf.createEntityManager();
     }
 
-    public PersonDTO create(String firstname, String lastname, PersonDTO.AddressDTO address, List<PersonDTO.PhoneDTO> phone, String email, List<PersonDTO.HobbyDTO> hobbies){
+    public PersonDTO save(String firstname, String lastname, PersonDTO.AddressDTO address, List<PersonDTO.PhoneDTO> phone, String email, List<PersonDTO.HobbyDTO> hobbies){
         EntityManager em = emf.createEntityManager();
         Person tmpPerson = new Person(email, firstname, lastname);
         Address tmpAddress = new Address(address.getStreet());
@@ -61,7 +61,7 @@ public class PersonFacade {
         return new PersonDTO(tmpPerson);
     }
 
-    public PersonDTO getPersonById(long id){
+    public PersonDTO getById(long id){
         EntityManager em = emf.createEntityManager();
         return new PersonDTO(em.find(Person.class, id));
     }
@@ -73,7 +73,7 @@ public class PersonFacade {
         return PersonDTO.toList(personList);
     }
 
-    public List<PersonDTO> getPersonsByCity(String postalCode){
+    public List<PersonDTO> getByPostalCode(String postalCode){
         EntityManager em = emf.createEntityManager();
         TypedQuery<CityInfo> q = em.createQuery("SELECT c FROM CityInfo c WHERE c.postalCode = :postalCode", CityInfo.class);
         q.setParameter("postalCode", postalCode);
@@ -85,7 +85,7 @@ public class PersonFacade {
         return PersonDTO.toList(personList);
     }
 
-    public List<PersonDTO> getPersonsByHobby(String hobby){
+    public List<PersonDTO> getByHobby(String hobby){
         EntityManager em = emf.createEntityManager();
         TypedQuery<Hobby> q = em.createQuery("SELECT h FROM Hobby h WHERE h.name = :name", Hobby.class);
         q.setParameter("name", hobby);

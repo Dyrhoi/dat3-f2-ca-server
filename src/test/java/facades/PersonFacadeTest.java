@@ -10,7 +10,6 @@ import utils.EMF_Creator;
 import static org.junit.jupiter.api.Assertions.*;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
-import javax.persistence.TypedQuery;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -79,14 +78,14 @@ class PersonFacadeTest {
         hobbyDTOList2.add(h2);
         hobbyDTOList3.add(h3);
 
-        p1 = facade.create("Carsten", "Jensen", a1, pList1, "test1@test.dk", hobbyDTOList1);
-        p2 = facade.create("Thomas", "Andersen", a2, pList2, "test2@test.dk", hobbyDTOList2);
-        p3 = facade.create("Anna", "Lauersen", a1, pList3, "test3@test.dk", hobbyDTOList3);
+        p1 = facade.save("Carsten", "Jensen", a1, pList1, "test1@test.dk", hobbyDTOList1);
+        p2 = facade.save("Thomas", "Andersen", a2, pList2, "test2@test.dk", hobbyDTOList2);
+        p3 = facade.save("Anna", "Lauersen", a1, pList3, "test3@test.dk", hobbyDTOList3);
     }
 
     @Test
-    void create() {
-        System.out.println("Create Test");
+    void save() {
+        System.out.println("Save Test");
         PersonDTO.AddressDTO a1 = new PersonDTO.AddressDTO("Langegade 14", "4000", "Roskilde");
         PersonDTO.PhoneDTO ph1 = new PersonDTO.PhoneDTO(45678231, "Hjemme");
         List<PersonDTO.PhoneDTO> pList1 = new ArrayList<>();
@@ -94,21 +93,28 @@ class PersonFacadeTest {
         PersonDTO.HobbyDTO h1 = new PersonDTO.HobbyDTO("Humor", "Generel", "Indendørs");
         List<PersonDTO.HobbyDTO> hobbyDTOList1 = new ArrayList<>();
         hobbyDTOList1.add(h1);
-        PersonDTO tmpPerson = facade.create("Louise", "Mølgård", a1, pList1, "test4@test.dk", hobbyDTOList1);
+        PersonDTO tmpPerson = facade.save("Louise", "Mølgård", a1, pList1, "test4@test.dk", hobbyDTOList1);
         assertEquals(4, facade.getAll().size());
     }
 
     @Test
-    void getPersonById() {
+    void getById() {
         System.out.println("Get Person by ID Test");
+        long id = p1.getId();
+        assertEquals(id, facade.getById(id).getId());
     }
 
     @Test
     void getAll() {
+        System.out.println("Get all Persons");
+        assertEquals(3, facade.getAll().size());
     }
 
-    @Test
-    void getPersonsByCity() {
+    //@Test
+    void getByPostalCode() {
+        System.out.println("Get Persons by Postal code");
+        System.out.println(facade.getByPostalCode("2300").size());
+        assertEquals(2, facade.getByPostalCode("4000").size());
     }
 
     @Test

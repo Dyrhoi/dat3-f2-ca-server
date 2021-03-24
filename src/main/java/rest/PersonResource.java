@@ -28,19 +28,19 @@ public class PersonResource {
     @GET
     @Path("/{id}")
     public Response getPeopleById(@PathParam("id") long id) {
-        return Response.ok().entity(GSON.toJson(PERSON_FACADE.getPersonById(id))).build();
+        return Response.ok().entity(GSON.toJson(PERSON_FACADE.getById(id))).build();
     }
 
     @GET
     @Path("/hobby/{hobby}")
     public Response getPeopleByHobby(@PathParam("hobby") String name) {
-        return Response.ok().entity(GSON.toJson(peopleResponseData(PERSON_FACADE.getPersonsByHobby(name)))).build();
+        return Response.ok().entity(GSON.toJson(peopleResponseData(PERSON_FACADE.getByHobby(name)))).build();
     }
 
     @GET
     @Path("/postalcode/{postalcode}")
     public Response getPeopleByPostalCode(@PathParam("postalcode") String postalcode) {
-        return Response.ok().entity(GSON.toJson(peopleResponseData(PERSON_FACADE.getPersonsByCity(postalcode)))).build();
+        return Response.ok().entity(GSON.toJson(peopleResponseData(PERSON_FACADE.getByPostalCode(postalcode)))).build();
     }
 
     @POST
