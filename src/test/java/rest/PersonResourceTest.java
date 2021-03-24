@@ -44,6 +44,27 @@ class PersonResourceTest {
         return GrizzlyHttpServerFactory.createHttpServer(BASE_URI, rc);
     }
 
+    private static void removeUsers() {
+        EntityManager em = emf.createEntityManager();
+        try{
+            em.getTransaction().begin();
+            // Do this since we need to cascade delete...?
+            em.createQuery("SELECT p from Person p", Person.class).getResultStream().forEach(person -> {
+                person.removeAllHobbies();
+                if(person.getAddress() != null) {
+                    CityInfo cityInfo = em.find(CityInfo.class, person.getAddress().getCityInfo().getPostalCode());
+                    cityInfo.removeAddress(person.getAddress());
+                    em.merge(cityInfo);
+                }
+                em.remove(person);
+
+            });
+            em.getTransaction().commit();
+        }finally {
+            em.close();
+        }
+    }
+
     @BeforeAll
     public static void setUpClass() {
         EMF_Creator.startREST_TestWithDB();
@@ -74,7 +95,7 @@ class PersonResourceTest {
 
     @AfterAll
     public static void closeTestServer(){
-        //System.in.read();
+        removeUsers();
 
         EMF_Creator.endREST_TestWithDB();
         httpServer.shutdown();

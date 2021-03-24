@@ -20,6 +20,27 @@ class PersonFacadeTest {
     private static PersonFacade facade;
     private static PersonDTO p1, p2, p3;
 
+    private static void removeUsers() {
+        EntityManager em = emf.createEntityManager();
+        try{
+            em.getTransaction().begin();
+            // Do this since we need to cascade delete...?
+            em.createQuery("SELECT p from Person p", Person.class).getResultStream().forEach(person -> {
+                person.removeAllHobbies();
+                if(person.getAddress() != null) {
+                    CityInfo cityInfo = em.find(CityInfo.class, person.getAddress().getCityInfo().getPostalCode());
+                    cityInfo.removeAddress(person.getAddress());
+                    em.merge(cityInfo);
+                }
+                em.remove(person);
+
+            });
+            em.getTransaction().commit();
+        }finally {
+            em.close();
+        }
+    }
+
     @BeforeAll
     public static void setUpClass() {
         emf = EMF_Creator.createEntityManagerFactoryForTest();
@@ -44,29 +65,12 @@ class PersonFacadeTest {
 
     @AfterAll
     public static void tearDownClass() {
-//        Clean up database after test is done or use a persistence unit with drop-and-create to start up clean on every test
+        removeUsers();
     }
 
     @BeforeEach
     public void setUp() {
-        EntityManager em = emf.createEntityManager();
-        try{
-            em.getTransaction().begin();
-            // Do this since we need to cascade delete...?
-            em.createQuery("SELECT p from Person p", Person.class).getResultStream().forEach(person -> {
-                person.removeAllHobbies();
-                if(person.getAddress() != null) {
-                    CityInfo cityInfo = em.find(CityInfo.class, person.getAddress().getCityInfo().getPostalCode());
-                    cityInfo.removeAddress(person.getAddress());
-                    em.merge(cityInfo);
-                }
-                em.remove(person);
-
-            });
-            em.getTransaction().commit();
-        }finally {
-            em.close();
-        }
+        removeUsers();
         PersonDTO.AddressDTO a1 = new PersonDTO.AddressDTO("Langegade 14", "4000", "Roskilde");
         PersonDTO.AddressDTO a2 = new PersonDTO.AddressDTO("Amagergade 12", "2300", "Amager");
         PersonDTO.PhoneDTO ph1 = new PersonDTO.PhoneDTO(12345678, "Hjemme");
