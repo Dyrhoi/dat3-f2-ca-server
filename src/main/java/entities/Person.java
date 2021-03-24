@@ -97,6 +97,10 @@ public class Person implements Serializable {
         hobby.removePerson(this);
     }
 
+    public void removeAllHobbies() {
+        this.hobbies.forEach(this::removeHobby);
+    }
+
     public List<Phone> getPhones() {
         return phones;
     }
@@ -108,6 +112,10 @@ public class Person implements Serializable {
     public void addPhone(Phone phone) {
         phones.add(phone);
         phone.setPerson(this);
+    }
+
+    public void removeAllPhone() {
+        this.phones.forEach(this::removePhone);
     }
 
     public void removePhone(Phone phone) {

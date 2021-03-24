@@ -36,20 +36,10 @@ public class PersonFacade {
         return emf.createEntityManager();
     }
 
-    public PersonDTO save(String firstname, String lastname, PersonDTO.AddressDTO address, List<PersonDTO.PhoneDTO> phone, String email, List<PersonDTO.HobbyDTO> hobbies){
+    public PersonDTO save(PersonDTO personDto) {
         EntityManager em = emf.createEntityManager();
-        Person tmpPerson = new Person(email, firstname, lastname);
-        Address tmpAddress = new Address(address.getStreet());
-        CityInfo tmpCityInfo = em.find(CityInfo.class, address.getPostalcode());
-        for (PersonDTO.PhoneDTO p : phone){
-            Phone ph1 = new Phone(p.getNumber(), p.getDescription());
-            tmpPerson.addPhone(ph1);
-        }
-        for (PersonDTO.HobbyDTO h : hobbies){
-            tmpPerson.addHobby(em.find(Hobby.class, h.getName()));
-        }
-        tmpAddress.setCityInfo(tmpCityInfo);
-        tmpPerson.setAddress(tmpAddress);
+        Person tmpPerson = new Person();
+        updatePersonFields(tmpPerson, personDto, em);
 
         try{
             em.getTransaction().begin();
@@ -59,6 +49,10 @@ public class PersonFacade {
             em.close();
         }
         return new PersonDTO(tmpPerson);
+    }
+
+    public PersonDTO save(String firstname, String lastname, PersonDTO.AddressDTO address, List<PersonDTO.PhoneDTO> phone, String email, List<PersonDTO.HobbyDTO> hobbies) {
+        return save(new PersonDTO(firstname, lastname, address, phone, email, hobbies));
     }
 
     public PersonDTO getById(long id){
@@ -98,12 +92,46 @@ public class PersonFacade {
         return q.getResultList().stream().map(CityInfoDTO::new).collect(Collectors.toList());
     }
 
-    public PersonDTO updatePerson(int id, PersonDTO pDTO){
-        return null;
+    public PersonDTO update(int id, PersonDTO personDto){
+        EntityManager em = emf.createEntityManager();
+        Person person = em.find(Person.class, id);
+        updatePersonFields(person, personDto, em);
+
+        try{
+            em.getTransaction().begin();
+            em.merge(person);
+            em.getTransaction().commit();
+        } finally {
+            em.close();
+        }
+        return new PersonDTO(person);
     }
 
     public PersonDTO deletePerson(int id){
         return null;
+    }
+
+    private void updatePersonFields(Person person, PersonDTO dto, EntityManager em) {
+        Address tmpAddress = new Address(dto.getAddress().getStreet());
+        CityInfo tmpCityInfo = em.find(CityInfo.class, dto.getAddress().getPostalcode());
+
+        // Remove all the existing bidirectional
+        person.removeAllHobbies();
+        person.removeAllPhone();
+
+        person.setFirstName(dto.getFirstname());
+        person.setLastName(dto.getLastname());
+        person.setEmail(dto.getEmail());
+
+        for (PersonDTO.PhoneDTO p : dto.getPhone()){
+            Phone ph1 = new Phone(p.getNumber(), p.getDescription());
+            person.addPhone(ph1);
+        }
+        for (PersonDTO.HobbyDTO h : dto.getHobbies()){
+            person.addHobby(em.find(Hobby.class, h.getName()));
+        }
+        tmpAddress.setCityInfo(tmpCityInfo);
+        person.setAddress(tmpAddress);
     }
 
 }
