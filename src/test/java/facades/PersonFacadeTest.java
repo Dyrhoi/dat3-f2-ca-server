@@ -114,9 +114,6 @@ class PersonFacadeTest {
     @Test
     void getByPostalCode() {
         System.out.println("Get Persons by Postal code");
-        EntityManager em = emf.createEntityManager();
-        TypedQuery<CityInfo> q = em.createQuery("SELECT c FROM CityInfo c", CityInfo.class);
-        CityInfo cityInfo = q.getSingleResult();
         assertEquals(2, facade.getByPostalCode("4000").size());
     }
 

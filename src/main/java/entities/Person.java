@@ -67,9 +67,16 @@ public class Person implements Serializable {
     }
 
     public void setAddress(Address address) {
+        if(this.address != null) {
+            address.removePerson(this);
+            address.getCityInfo().removeAddress(address);
+        }
         this.address = address;
-        if(address != null)
+
+        if(address != null) {
             address.addPerson(this);
+            address.getCityInfo().addAddress(address);
+        }
     }
 
     public List<Hobby> getHobbies() {
