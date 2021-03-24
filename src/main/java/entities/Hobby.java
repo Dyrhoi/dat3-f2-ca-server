@@ -18,7 +18,7 @@ public class Hobby implements Serializable {
     private String category;
     private String type;
 
-    @ManyToMany
+    @ManyToMany()
     private List<Person> people = new ArrayList<>();
 
     public Hobby() {

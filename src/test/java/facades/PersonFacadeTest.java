@@ -120,6 +120,7 @@ class PersonFacadeTest {
     @Test
     void getPersonsByHobby() {
         System.out.println("Get Persons by Hobby Test");
+        System.out.println(facade.getByHobby("vævning"));
         assertEquals(1, facade.getByHobby("Vævning").size());
         assertEquals(1, facade.getByHobby("Humor").size());
         assertEquals(1, facade.getByHobby("Videospil").size());
