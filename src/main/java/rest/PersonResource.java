@@ -52,7 +52,7 @@ public class PersonResource {
     @POST
     public Response savePerson(String JsonPerson) {
         PersonDTO p = GSON.fromJson(JsonPerson, PersonDTO.class);
-        //p = PERSON_FACADE.save(p);
+        p = PERSON_FACADE.save(p);
         return Response.ok().entity(GSON.toJson(p)).build();
     }
 
