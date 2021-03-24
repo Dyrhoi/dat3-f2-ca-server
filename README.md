@@ -10,6 +10,7 @@
 |---        |---                                     |---                      |---                                    |---            |
 | GET       | /api/people                            |                         | PersonArray (1.1)                     |               |
 | GET       | /api/people/{id}                       |                         | Person (1)                            | (e1)          |
+| GET       | /api/people/phone/{phonenumber}        |                         | PersonArray (1.1)                     | (e1)          |
 | GET       | /api/people/hobby/{hobby}              |                         | PersonArray (1.1)                     | (e1)          |
 | GET       | /api/people/postalcode/{postalcode}    |                         | PersonArray (1.1)                     | (e1)          |
 | POST      | /api/people                            | Person(1)               | CREATED Person (1)                    | (e2)          |
