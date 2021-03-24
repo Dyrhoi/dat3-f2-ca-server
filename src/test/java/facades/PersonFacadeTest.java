@@ -53,7 +53,12 @@ class PersonFacadeTest {
         try{
             em.getTransaction().begin();
             // Do this since we need to cascade delete...?
-            em.createQuery("SELECT p from Person p", Person.class).getResultStream().forEach(em::remove);
+            em.createQuery("SELECT p from Person p", Person.class).getResultStream().forEach(person -> {
+                person.getHobbies().forEach(hobby -> {
+                    hobby.removePerson(person);
+                });
+                em.remove(person);
+            });
             em.getTransaction().commit();
         }finally {
             em.close();
