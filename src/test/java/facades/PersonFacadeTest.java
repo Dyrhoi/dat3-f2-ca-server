@@ -156,6 +156,13 @@ class PersonFacadeTest {
     }
 
     @Test
+    void getByNumber() {
+        System.out.println("Get Person by Number Test");
+        int number = p1.getPhone().get(0).getNumber();
+        assertEquals(number, facade.getByNumber(number).getPhone().get(0).getNumber());
+    }
+
+    @Test
     void delete() {
         System.out.println("Update");
         long id = p1.getId();

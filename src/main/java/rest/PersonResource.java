@@ -43,6 +43,12 @@ public class PersonResource {
         return Response.ok().entity(GSON.toJson(peopleResponseData(PERSON_FACADE.getByPostalCode(postalcode)))).build();
     }
 
+    @GET
+    @Path("/phone/{phonenumber}")
+    public Response getPeopleByPhoneNumber(@PathParam("phonenumber") int phoneNumber) {
+        return Response.ok().entity(GSON.toJson(PERSON_FACADE.getByNumber(phoneNumber))).build();
+    }
+
     @POST
     public Response savePerson(String JsonPerson) {
         PersonDTO p = GSON.fromJson(JsonPerson, PersonDTO.class);

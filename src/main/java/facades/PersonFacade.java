@@ -62,6 +62,11 @@ public class PersonFacade {
         return new PersonDTO(em.find(Person.class, id));
     }
 
+    public PersonDTO getByNumber(int number){
+        EntityManager em = emf.createEntityManager();
+        return new PersonDTO(em.find(Phone.class, number).getPerson());
+    }
+
     public List<PersonDTO> getAll(){
         EntityManager em = emf.createEntityManager();
         TypedQuery<Person> q = em.createQuery("SELECT p FROM Person p", Person.class);
