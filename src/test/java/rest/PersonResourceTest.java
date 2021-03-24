@@ -102,7 +102,7 @@ class PersonResourceTest {
                 .get("/people").then()
                 .assertThat()
                 .statusCode(HttpStatus.OK_200.getStatusCode())
-                .body("count", equalTo(2));
+                .body("data.size()", equalTo(2));
     }
 
     @Test
@@ -117,10 +117,22 @@ class PersonResourceTest {
 
     @Test
     void getPeopleByHobby() {
+        given()
+                .contentType("application/json")
+                .get("/hobby/{hobby}").then()
+                .assertThat()
+                .statusCode(HttpStatus.OK_200.getStatusCode())
+                .body("data.size()", equalTo(1));
     }
 
     @Test
     void getPeopleByPostalCode() {
+        given()
+                .contentType("application/json")
+                .get("/postalcode/{postalcode}").then()
+                .assertThat()
+                .statusCode(HttpStatus.OK_200.getStatusCode())
+                .body("data.size()", equalTo(1));
     }
 
     @Test
