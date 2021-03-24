@@ -94,13 +94,15 @@ public class PersonFacade {
         return q.getResultList().stream().map(CityInfoDTO::new).collect(Collectors.toList());
     }
 
-    public PersonDTO update(int id, PersonDTO personDto){
+    public PersonDTO update(long id, PersonDTO personDto){
         EntityManager em = emf.createEntityManager();
         Person person = em.find(Person.class, id);
+
         updatePersonFields(person, personDto, em);
 
         try{
             em.getTransaction().begin();
+            em.persist(person.getAddress());
             em.merge(person);
             em.getTransaction().commit();
         } finally {
@@ -109,17 +111,50 @@ public class PersonFacade {
         return new PersonDTO(person);
     }
 
-    public PersonDTO deletePerson(int id){
-        return null;
+    public PersonDTO delete(long id){
+        EntityManager em = emf.createEntityManager();
+        Person person = em.find(Person.class, id);
+        PersonDTO personDto = new PersonDTO(person);
+
+        em.getTransaction().begin();
+        person.removeAllHobbies();
+        if(person.getAddress() != null) {
+            CityInfo cityInfo = em.find(CityInfo.class, person.getAddress().getCityInfo().getPostalCode());
+            cityInfo.removeAddress(person.getAddress());
+            em.merge(cityInfo);
+        }
+        em.remove(person);
+        em.getTransaction().commit();
+
+        return personDto;
     }
 
     private void updatePersonFields(Person person, PersonDTO dto, EntityManager em) {
-        Address tmpAddress = new Address(dto.getAddress().getStreet());
-        CityInfo tmpCityInfo = em.find(CityInfo.class, dto.getAddress().getPostalcode());
-
         // Remove all the existing bidirectional
         person.removeAllHobbies();
         person.removeAllPhone();
+
+        // -- UPDATE ADDRESS FIELD ---
+        // Multiple people can live on ONE address.
+        // When we update a person, we need to make that:
+        // 1. We find their old address in the system and remove them from it.
+        // 2. If that address is empty, we delete it.
+        //      2.1 Then we remove from our CityInfo address list as well.
+        if(person.getAddress() != null) {
+            Address oldAddress = person.getAddress();
+            CityInfo oldCityInfo = oldAddress.getCityInfo();
+
+            oldAddress.removePerson(person);
+
+            if (oldAddress.getPeople().size() == 0) {
+                oldCityInfo.removeAddress(oldAddress);
+            }
+        }
+        Address newAddress = new Address(dto.getAddress().getStreet());
+        CityInfo newCityInfo = em.find(CityInfo.class, dto.getAddress().getPostalcode());
+
+        newAddress.setCityInfo(newCityInfo);
+        person.setAddress(newAddress);
 
         person.setFirstName(dto.getFirstname());
         person.setLastName(dto.getLastname());
@@ -132,8 +167,6 @@ public class PersonFacade {
         for (PersonDTO.HobbyDTO h : dto.getHobbies()){
             person.addHobby(em.find(Hobby.class, h.getName()));
         }
-        tmpAddress.setCityInfo(tmpCityInfo);
-        person.setAddress(tmpAddress);
     }
 
 }

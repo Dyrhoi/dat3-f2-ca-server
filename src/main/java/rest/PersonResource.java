@@ -51,9 +51,17 @@ public class PersonResource {
     }
 
     @PUT
-    public Response updatePerson(String JsonPerson) {
+    @Path("/{id}")
+    public Response updatePerson(@PathParam("id") long id, String JsonPerson) {
         PersonDTO p = GSON.fromJson(JsonPerson, PersonDTO.class);
-        //p = PERSON_FACADE.update(p);
+        p = PERSON_FACADE.update(id, p);
+        return Response.ok().entity(GSON.toJson(p)).build();
+    }
+
+    @DELETE
+    @Path("/{id}")
+    public Response deletePerson(@PathParam("id") long id) {
+        PersonDTO p = PERSON_FACADE.delete(id);
         return Response.ok().entity(GSON.toJson(p)).build();
     }
 

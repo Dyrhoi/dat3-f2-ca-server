@@ -54,10 +54,14 @@ class PersonFacadeTest {
             em.getTransaction().begin();
             // Do this since we need to cascade delete...?
             em.createQuery("SELECT p from Person p", Person.class).getResultStream().forEach(person -> {
-                person.getHobbies().forEach(hobby -> {
-                    hobby.removePerson(person);
-                });
+                person.removeAllHobbies();
+                if(person.getAddress() != null) {
+                    CityInfo cityInfo = em.find(CityInfo.class, person.getAddress().getCityInfo().getPostalCode());
+                    cityInfo.removeAddress(person.getAddress());
+                    em.merge(cityInfo);
+                }
                 em.remove(person);
+
             });
             em.getTransaction().commit();
         }finally {
@@ -123,12 +127,36 @@ class PersonFacadeTest {
     }
 
     @Test
-    void getPersonsByHobby() {
+    void getByHobby() {
         System.out.println("Get Persons by Hobby Test");
         System.out.println(facade.getByHobby("vævning"));
         assertEquals(1, facade.getByHobby("Vævning").size());
         assertEquals(1, facade.getByHobby("Humor").size());
         assertEquals(1, facade.getByHobby("Videospil").size());
+    }
+
+    @Test
+    void updatePerson() {
+        System.out.println("Update");
+        PersonDTO personDto = facade.getById(p1.getId());
+        personDto.setEmail("updated_test@gmail.com");
+        personDto.setAddress(p2.getAddress());
+
+        facade.update(p1.getId(), personDto);
+        List<PersonDTO> peopleK = facade.getByPostalCode("2300");
+        List<PersonDTO> peopleR = facade.getByPostalCode("4000");
+
+        assertEquals(2, facade.getByPostalCode("2300").size());
+        assertEquals(1, facade.getByPostalCode("4000").size());
+        assertEquals("updated_test@gmail.com", facade.getById(p1.getId()).getEmail());
+    }
+
+    @Test
+    void delete() {
+        System.out.println("Update");
+        long id = p1.getId();
+        facade.delete(id);
+        assertEquals(2, facade.getAll().size());
     }
 
     @Test

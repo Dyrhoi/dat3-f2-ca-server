@@ -3,6 +3,7 @@ package entities;
 import javax.persistence.*;
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Objects;
 
@@ -16,7 +17,7 @@ public class Person implements Serializable {
     private String email;
     private String firstName;
     private String lastName;
-    @ManyToOne(cascade = CascadeType.PERSIST)
+    @ManyToOne(cascade = CascadeType.ALL)
     private Address address;
 
     @ManyToMany(cascade = CascadeType.PERSIST, mappedBy = "people")
@@ -67,10 +68,11 @@ public class Person implements Serializable {
     }
 
     public void setAddress(Address address) {
-        if(this.address != null) {
+/*        if(this.address != null) {
             address.removePerson(this);
-            address.getCityInfo().removeAddress(address);
-        }
+            if(address.getPeople().size() == 0)
+                address.getCityInfo().removeAddress(this.address);
+        }*/
         this.address = address;
 
         if(address != null) {
@@ -98,7 +100,13 @@ public class Person implements Serializable {
     }
 
     public void removeAllHobbies() {
-        this.hobbies.forEach(this::removeHobby);
+        //this.hobbies.forEach(this::removeHobby);
+        // Avoiding concurrent exception...
+        for (Iterator<Hobby> iterator = this.getHobbies().iterator(); iterator.hasNext();) {
+            Hobby hobby = iterator.next();
+            iterator.remove();
+            hobby.removePerson(this);
+        }
     }
 
     public List<Phone> getPhones() {
@@ -115,7 +123,13 @@ public class Person implements Serializable {
     }
 
     public void removeAllPhone() {
-        this.phones.forEach(this::removePhone);
+        //this.phones.forEach(this::removePhone);
+        // Avoiding concurrent exception...
+        for (Iterator<Phone> iterator = this.getPhones().iterator(); iterator.hasNext();) {
+            Phone phone = iterator.next();
+            iterator.remove();
+            phone.setPerson(null);
+        }
     }
 
     public void removePhone(Phone phone) {
