@@ -19,7 +19,7 @@ public class Person implements Serializable {
     @ManyToOne(cascade = CascadeType.PERSIST)
     private Address address;
 
-    @ManyToMany(mappedBy = "people", cascade = CascadeType.PERSIST)
+    @ManyToMany(cascade = CascadeType.PERSIST, mappedBy = "people")
     private List<Hobby> hobbies = new ArrayList<>();
 
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "person", orphanRemoval = true)
