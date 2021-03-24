@@ -107,21 +107,27 @@ class PersonFacadeTest {
 
     @Test
     void getAll() {
-        System.out.println("Get all Persons");
+        System.out.println("Get all Persons Test");
         assertEquals(3, facade.getAll().size());
     }
 
     @Test
     void getByPostalCode() {
-        System.out.println("Get Persons by Postal code");
+        System.out.println("Get Persons by Postal code Test");
         assertEquals(2, facade.getByPostalCode("4000").size());
     }
 
     @Test
     void getPersonsByHobby() {
+        System.out.println("Get Persons by Hobby Test");
+        assertEquals(1, facade.getByHobby("Vævning").size());
+        assertEquals(1, facade.getByHobby("Humor").size());
+        assertEquals(1, facade.getByHobby("Videospil").size());
     }
 
     @Test
     void getAllZipCodes() {
+        System.out.println("Get all Zipcodes Test");
+        assertEquals(2, facade.getAllZipCodes().size());
     }
 }
