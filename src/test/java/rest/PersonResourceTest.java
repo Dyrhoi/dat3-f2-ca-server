@@ -117,6 +117,12 @@ class PersonResourceTest {
 
     @Test
     void getPeopleByHobby() {
+        given()
+                .contentType("application/json")
+                .get("/hobby/{hobby}").then()
+                .assertThat()
+                .statusCode(HttpStatus.OK_200.getStatusCode())
+                .body("count", equalTo(1));
     }
 
     @Test
