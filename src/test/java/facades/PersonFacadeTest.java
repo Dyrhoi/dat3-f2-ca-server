@@ -10,6 +10,7 @@ import utils.EMF_Creator;
 import static org.junit.jupiter.api.Assertions.*;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
+import javax.persistence.TypedQuery;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -110,10 +111,12 @@ class PersonFacadeTest {
         assertEquals(3, facade.getAll().size());
     }
 
-    //@Test
+    @Test
     void getByPostalCode() {
         System.out.println("Get Persons by Postal code");
-        System.out.println(facade.getByPostalCode("2300").size());
+        EntityManager em = emf.createEntityManager();
+        TypedQuery<CityInfo> q = em.createQuery("SELECT c FROM CityInfo c", CityInfo.class);
+        CityInfo cityInfo = q.getSingleResult();
         assertEquals(2, facade.getByPostalCode("4000").size());
     }
 
