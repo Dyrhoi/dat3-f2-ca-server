@@ -1,6 +1,9 @@
 package dtos;
 
 import entities.Person;
+import errorhandling.exceptions.ValidationException;
+import org.apache.commons.lang3.StringUtils;
+import org.apache.commons.validator.routines.EmailValidator;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -119,8 +122,32 @@ public class PersonDTO {
         return Objects.hash(id);
     }
 
-    public void validate() {
-        
+    public void validate() throws ValidationException {
+        List<String> errors = new ArrayList<>();
+        //Firstname & Lastname validation
+        if (StringUtils.isBlank(firstname) || StringUtils.isBlank(lastname)){
+            errors.add("Fornavn og/eller Efternavn må ikke være tomme");
+        }
+
+        //Email validation
+        if(!EmailValidator.getInstance().isValid(email)){
+            errors.add("Dette er ikke en valid email");
+        }
+
+        //Address validation
+        if(StringUtils.isBlank(address.getStreet())){
+            errors.add("Vejnavn er ikke indtastet");
+        }
+
+        //Postalcode validation
+        if(StringUtils.isBlank(address.getPostalcode())){
+            errors.add("Postkoden er ikke indtastet");
+        }
+
+        //Validation Error list
+        if (!errors.isEmpty()){
+            throw new ValidationException("Der er problemer med disse felter", errors);
+        }
     }
 
     public static class AddressDTO {
