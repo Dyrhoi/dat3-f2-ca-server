@@ -10,6 +10,6 @@ public class ValidationException extends WebApplicationException {
     }
 
     public ValidationException (String message, List<String> errors){
-        this(message + String.join(", ",errors));
+        this(message + ": " + String.join("; ",errors));
     }
 }

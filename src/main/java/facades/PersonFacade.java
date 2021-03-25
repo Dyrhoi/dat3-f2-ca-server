@@ -4,9 +4,8 @@ import dtos.CityInfoDTO;
 import dtos.PersonDTO;
 import entities.*;
 
-import javax.persistence.EntityManager;
-import javax.persistence.EntityManagerFactory;
-import javax.persistence.TypedQuery;
+import javax.persistence.*;
+import javax.ws.rs.WebApplicationException;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
@@ -50,6 +49,9 @@ public class PersonFacade {
             em.persist(tmpPerson);
             em.getTransaction().commit();
             return new PersonDTO(tmpPerson);
+        }
+        catch (PersistenceException e) {
+            throw new WebApplicationException("Noget gik galt da vi prøvede at indsætte dataen. Prøv igen senere eller kontakt en adminstrator.");
         } finally {
             em.close();
         }
@@ -62,7 +64,11 @@ public class PersonFacade {
     public PersonDTO getById(long id) {
         EntityManager em = emf.createEntityManager();
         try {
-            return new PersonDTO(em.find(Person.class, id));
+            Person person = em.find(Person.class, id);
+            if(person == null) {
+                throw new WebApplicationException("Personen med id (" + id + "), kunne ikke findes.", 404);
+            }
+            return new PersonDTO(person);
         } finally {
             em.close();
         }
@@ -71,7 +77,11 @@ public class PersonFacade {
     public PersonDTO getByNumber(int number) {
         EntityManager em = emf.createEntityManager();
         try {
-            return new PersonDTO(em.find(Phone.class, number).getPerson());
+            Person person = em.find(Phone.class, number).getPerson();
+            if(person == null) {
+                throw new WebApplicationException("Personen med telefonummeret (" + number + "), kunne ikke findes.", 404);
+            }
+            return new PersonDTO(person);
         } finally {
             em.close();
         }
@@ -92,6 +102,9 @@ public class PersonFacade {
         EntityManager em = emf.createEntityManager();
         try {
             CityInfo cityInfo = em.find(CityInfo.class, postalCode);
+            if(cityInfo == null) {
+                throw new WebApplicationException("Zip koden " + "(" + postalCode + "), blev ikke fundet.", 404);
+            }
 
             List<Person> personList = new ArrayList<>();
             cityInfo.getAddresses().forEach(address -> {
@@ -106,10 +119,11 @@ public class PersonFacade {
     public List<PersonDTO> getByHobby(String hobby) {
         EntityManager em = emf.createEntityManager();
         try {
-            TypedQuery<Hobby> q = em.createQuery("SELECT h FROM Hobby h WHERE h.name = :name", Hobby.class);
-            q.setParameter("name", hobby);
-            Hobby hobbies = q.getSingleResult();
-            List<Person> personList = hobbies.getPeople();
+            Hobby foundHobby = em.find(Hobby.class, hobby);
+            if(foundHobby == null) {
+                throw new WebApplicationException("Vi kunne ikke finde en hobby med navn (" + hobby + ")", 404);
+            }
+            List<Person> personList = foundHobby.getPeople();
             return PersonDTO.toList(personList);
         } finally {
             em.close();
@@ -129,24 +143,36 @@ public class PersonFacade {
     public PersonDTO update(long id, PersonDTO personDto) {
         EntityManager em = emf.createEntityManager();
         try {
-            personDto.validate();
             Person person = em.find(Person.class, id);
+            if(person == null) {
+                throw new WebApplicationException("Personen med id (" + id + "), kunne ikke findes.", 404);
+            }
+            personDto.validate();
+
             updatePersonFields(person, personDto, em);
+
             em.getTransaction().begin();
             em.persist(person.getAddress());
             em.merge(person);
             em.getTransaction().commit();
             return new PersonDTO(person);
-        } finally {
+        }
+        catch (PersistenceException e) {
+            throw new WebApplicationException("Noget gik galt da vi prøvede at opdatere dataen. Prøv igen senere eller kontakt en adminstrator.");
+        }
+        finally {
             em.close();
         }
     }
 
     public PersonDTO delete(long id) {
         EntityManager em = emf.createEntityManager();
-        Person person = em.find(Person.class, id);
-        PersonDTO personDto = new PersonDTO(person);
         try {
+            Person person = em.find(Person.class, id);
+            if(person == null) {
+                throw new WebApplicationException("Personen med id (" + id + "), kunne ikke findes.", 404);
+            }
+            PersonDTO personDto = new PersonDTO(person);
             em.getTransaction().begin();
             person.removeAllHobbies();
             if (person.getAddress() != null) {
@@ -157,7 +183,10 @@ public class PersonFacade {
             em.remove(person);
             em.getTransaction().commit();
             return personDto;
-        } finally {
+        } catch (PersistenceException e) {
+            throw new WebApplicationException("Noget gik galt da vi prøvede at slette dataen. Prøv igen senere eller kontakt en adminstrator.");
+        }
+        finally {
             em.close();
         }
     }
