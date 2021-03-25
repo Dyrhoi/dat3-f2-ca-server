@@ -1634,7 +1634,7 @@ INSERT INTO HOBBY (name,wikiLink,category,type)  VALUES ('Sten springer over','h
 INSERT INTO HOBBY (name,wikiLink,category,type)  VALUES ('Solbadning','https://en.wikipedia.org/wiki/Sun_bathing','Generel','Udendørs');
 INSERT INTO HOBBY (name,wikiLink,category,type)  VALUES ('Surfing','https://en.wikipedia.org/wiki/Surfing','Generel',' Konkurrence');
 INSERT INTO HOBBY (name,wikiLink,category,type)  VALUES ('Overlevelse','https://en.wikipedia.org/wiki/Survivalism','Generel','Udendørs');
-INSERT INTO HOBBY (name,wikiLink,category,type)  VALUES ('Menneskelig svømning','https://en.wikipedia.org/wiki/Human_swimming','Generel',' Konkurrence');
+INSERT INTO HOBBY (name,wikiLink,category,type)  VALUES ('Svømning','https://en.wikipedia.org/wiki/Human_swimming','Generel',' Konkurrence');
 INSERT INTO HOBBY (name,wikiLink,category,type)  VALUES ('Taekwondo','https://en.wikipedia.org/wiki/Taekwondo','Generel','Udendørs');
 INSERT INTO HOBBY (name,wikiLink,category,type)  VALUES ('Tai Chi','https://en.wikipedia.org/wiki/Tai_chi','Generel','Udendørs');
 INSERT INTO HOBBY (name,wikiLink,category,type)  VALUES ('Tennis','https://en.wikipedia.org/wiki/Tennis','Generel',' Konkurrence');
