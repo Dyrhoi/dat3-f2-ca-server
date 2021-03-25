@@ -130,16 +130,6 @@ public class PersonFacade {
         }
     }
 
-    public List<CityInfoDTO> getAllZipCodes() {
-        EntityManager em = emf.createEntityManager();
-        try {
-            TypedQuery<CityInfo> q = em.createQuery("SELECT z FROM CityInfo z", CityInfo.class);
-            return q.getResultList().stream().map(CityInfoDTO::new).collect(Collectors.toList());
-        } finally {
-            em.close();
-        }
-    }
-
     public PersonDTO update(long id, PersonDTO personDto) {
         EntityManager em = emf.createEntityManager();
         try {
