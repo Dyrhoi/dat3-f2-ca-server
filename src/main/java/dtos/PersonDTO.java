@@ -1,6 +1,7 @@
 package dtos;
 
 import entities.Person;
+import entities.Phone;
 import errorhandling.exceptions.ValidationException;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.validator.routines.EmailValidator;
@@ -125,27 +126,67 @@ public class PersonDTO {
     public void validate() throws ValidationException {
         List<String> errors = new ArrayList<>();
         //Firstname & Lastname validation
-        if (StringUtils.isBlank(firstname) || StringUtils.isBlank(lastname)){
+        if (StringUtils.isBlank(firstname) || StringUtils.isBlank(lastname)) {
             errors.add("Fornavn og/eller Efternavn må ikke være tomme");
         }
 
         //Email validation
-        if(!EmailValidator.getInstance().isValid(email)){
-            errors.add("Dette er ikke en valid email");
+        if (!EmailValidator.getInstance().isValid(email)) {
+            errors.add("Den indtastede email er ikke en email");
         }
 
         //Address validation
-        if(StringUtils.isBlank(address.getStreet())){
+        if (StringUtils.isBlank(address.getStreet())) {
             errors.add("Vejnavn er ikke indtastet");
         }
 
         //Postalcode validation
-        if(StringUtils.isBlank(address.getPostalcode())){
+        if (StringUtils.isBlank(address.getPostalcode())) {
             errors.add("Postkoden er ikke indtastet");
         }
 
+        //Phone validation
+        if (phone != null) {
+            if (!phone.isEmpty()) {
+                boolean error = false;
+                for (PhoneDTO p : phone) {
+                    if (String.valueOf(p.getNumber()).length() != 8) {
+                        error = true;
+                        break;
+                    }
+                    if (StringUtils.isBlank(p.getDescription())) {
+                        error = true;
+                        break;
+                    }
+                }
+                if (error) {
+                    errors.add("Der er fejl i de indtastede telefonnumre, de skal være på præcis 8 cifre og der skal være en beskrivelse");
+                }
+            }
+        } else {
+            errors.add("Noget gik galt, da vi prøvede at oprette telefonnumrene. Prøv igen");
+        }
+
+        //Hobby validation
+        if (hobbies != null) {
+            if (!hobbies.isEmpty()) {
+                boolean error = false;
+                for (HobbyDTO h : hobbies) {
+                    if (StringUtils.isBlank(h.getName())) {
+                        error = true;
+                        break;
+                    }
+                }
+                if (error) {
+                    errors.add("Der er fejl i de indtastede hobbyer, feltet må ikke være tomt");
+                }
+            }
+        } else {
+            errors.add("Noget gik galt, da vi prøvede at oprette hobbyerne. Prøv igen");
+        }
+
         //Validation Error list
-        if (!errors.isEmpty()){
+        if (!errors.isEmpty()) {
             throw new ValidationException("Der er problemer med disse felter", errors);
         }
     }

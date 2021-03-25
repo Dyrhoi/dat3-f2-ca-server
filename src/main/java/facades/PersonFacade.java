@@ -128,19 +128,18 @@ public class PersonFacade {
 
     public PersonDTO update(long id, PersonDTO personDto) {
         EntityManager em = emf.createEntityManager();
-        Person person = em.find(Person.class, id);
-
-        updatePersonFields(person, personDto, em);
-
         try {
+            personDto.validate();
+            Person person = em.find(Person.class, id);
+            updatePersonFields(person, personDto, em);
             em.getTransaction().begin();
             em.persist(person.getAddress());
             em.merge(person);
             em.getTransaction().commit();
+            return new PersonDTO(person);
         } finally {
             em.close();
         }
-        return new PersonDTO(person);
     }
 
     public PersonDTO delete(long id) {
