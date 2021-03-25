@@ -119,6 +119,10 @@ public class PersonDTO {
         return Objects.hash(id);
     }
 
+    public void validate() {
+        
+    }
+
     public static class AddressDTO {
         private String street;
         private String postalcode;
