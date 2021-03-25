@@ -21,7 +21,7 @@ public class HobbyResource {
     private static final Gson GSON = new GsonBuilder().setPrettyPrinting().create();
     private static final HobbyFacade HOBBY_FACADE = HobbyFacade.getHobbyFacade(EMF_Creator.createEntityManagerFactory());
 
-    private HobbyResource() {}
+    public HobbyResource() {}
 
     @GET
     public Response getAll() {

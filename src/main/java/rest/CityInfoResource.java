@@ -21,7 +21,7 @@ public class CityInfoResource {
     private static final Gson GSON = new GsonBuilder().setPrettyPrinting().create();
     private static final CityInfoFacade CITY_INFO_FACADE = CityInfoFacade.getCityInfoFacade(EMF_Creator.createEntityManagerFactory());
 
-    private CityInfoResource() {}
+    public CityInfoResource() {}
 
     @GET
     public Response getAll() {
