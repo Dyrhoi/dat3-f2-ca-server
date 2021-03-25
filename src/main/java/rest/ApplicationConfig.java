@@ -27,6 +27,8 @@ public class ApplicationConfig extends Application {
         resources.add(CorsFilter.class);
 
         resources.add(PersonResource.class);
+        resources.add(CityInfoResource.class);
+        resources.add(HobbyResource.class);
 
     }
     
