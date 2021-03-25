@@ -17,6 +17,10 @@
 | PUT       | /api/people/{id}                       | Person(1)               | UPDATED Person (1)                    | (e1) & (e2)   |
 | DELETE    | /api/people/{id}                       |                         | DELETED Person (1)                    | (e1) & (e2)   |
 | GET       | /api/postalcodes                       |                         | [PostalCode, PostalCode, ...] (2)     | (e1)          |
+| GET       | /api/postalcodes/{postalcode}          |                         | PostalCode (2)                        | (e1)          |
+| GET       | /api/hobbies                           |                         | [Hobby, Hobby, ...] (1.4)             | (e1)          |
+| GET       | /api/hobbies/name/{name}               |                         | Hobby (1.4)                           | (e1)          |
+| GET       | /api/hobbies/search/{name}             |                         | [Hobby, Hobby, ...] (1.4)             | (e1)          |
 
 ### Request Body and Respons Formats
 #### Person
