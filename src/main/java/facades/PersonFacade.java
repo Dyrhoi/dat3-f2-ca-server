@@ -214,6 +214,9 @@ public class PersonFacade {
         }
         Address newAddress = new Address(dto.getAddress().getStreet());
         CityInfo newCityInfo = em.find(CityInfo.class, dto.getAddress().getPostalcode());
+        if(newCityInfo == null) {
+            throw new WebApplicationException("Zip koden " + "(" + dto.getAddress().getPostalcode() + "), blev ikke fundet. Prøv igen.", 404);
+        }
 
         newAddress.setCityInfo(newCityInfo);
         person.setAddress(newAddress);
@@ -227,7 +230,11 @@ public class PersonFacade {
             person.addPhone(ph1);
         }
         for (PersonDTO.HobbyDTO h : dto.getHobbies()) {
-            person.addHobby(em.find(Hobby.class, h.getName()));
+            Hobby hobby = em.find(Hobby.class, h.getName());
+            if(hobby == null) {
+                throw new WebApplicationException("Hobbyen ( "+ h.getName() +" ) du prøvede at tilføje til brugeren findes ikke i systemet");
+            }
+            person.addHobby(hobby);
         }
     }
 
